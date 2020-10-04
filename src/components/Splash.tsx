@@ -1,5 +1,5 @@
 import React from 'react'
-import './Splash.css'
+import './Splash.scss'
 
 type SplashProps = {}
 type SplashState = {

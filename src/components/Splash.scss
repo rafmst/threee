@@ -11,14 +11,12 @@
   justify-content: center;
   transition: opacity 400ms ease-in-out;
   pointer-events: all;
-}
-
-#splash.fade {
-  opacity: 0;
-  pointer-events: none;
-  z-index: -1;
-}
-
-#splash svg {
-  display: inline-block;
+  &.fade {
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+  svg {
+    display: inline-block;
+  }
 }
