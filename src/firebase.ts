@@ -1,5 +1,6 @@
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/firestore'
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_KEY,
@@ -13,11 +14,36 @@ firebase.initializeApp({
 export const auth = firebase.auth()
 const googleProvider = new firebase.auth.GoogleAuthProvider()
 
+export const db = firebase.firestore()
+
+/**
+ * Sign in user to firebase
+ */
 export const signInWithGoogle = async () => {
-  await auth.signInWithPopup(googleProvider)
+  const response = await auth.signInWithPopup(googleProvider)
+  if (response.additionalUserInfo?.isNewUser && auth.currentUser !== null) {
+    const { uid } = auth.currentUser
+    db.collection('configurations')
+      .doc(uid)
+      .set({
+        title_left: '',
+        color_left: '',
+        title_middle: '',
+        color_middle: '',
+        title_right: '',
+        color_right: '',
+      })
+      .catch(function (error) {
+        console.log(error)
+        // Should logout user to avoid any errors
+      })
+  }
   return
 }
 
+/**
+ * Sign out user
+ */
 export const signOut = async () => {
   await auth.signOut()
   return
